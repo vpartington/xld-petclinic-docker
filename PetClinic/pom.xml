@@ -29,7 +29,7 @@
                         </goals>
 
                         <configuration>
-                            <imageName>bmoussaud/petclinic</imageName>
+                            <imageName>vpartington/petclinic</imageName>
                             <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
                             <resources>
                                 <resource>
@@ -48,8 +48,8 @@
                             <goal>tag</goal>
                         </goals>
                         <configuration>
-                            <image>bmoussaud/petclinic</image>
-                            <newName>localhost:5000/bmoussaud/petclinic:${petclinic.image.version}</newName>
+                            <image>vpartington/petclinic</image>
+                            <newName>dkr-reg:5000/vpartington/petclinic:${petclinic.image.version}</newName>
                             <pushImage>true</pushImage>
                             <tagInfoFile>${project.build.directory}/docker_image_info.json</tagInfoFile>
                         </configuration>
@@ -62,17 +62,14 @@
                             <goal>tag</goal>
                         </goals>
                         <configuration>
-                            <image>bmoussaud/petclinic</image>
-                            <newName>docker.io/bmoussaud/petclinic:${petclinic.image.version}</newName>
+                            <image>vpartington/petclinic</image>
+                            <newName>docker.io/vpartington/petclinic:${petclinic.image.version}</newName>
                             <serverId>docker-hub</serverId>
                             <pushImage>true</pushImage>
                         </configuration>
                     </execution>
-
                 </executions>
-
             </plugin>
-
         </plugins>
     </build>
     <dependencies>

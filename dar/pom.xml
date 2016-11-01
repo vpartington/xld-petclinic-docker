@@ -32,7 +32,7 @@
 
                 <configuration>
                     <serverAddress>localhost</serverAddress>
-                    <applicationName>Docker/PetDocker</applicationName>
+                    <applicationName>Experimental/Docker (vpartington)/PetDocker</applicationName>
                     <deploymentPackageProperties>
                         <orchestrator>
                             <value>parallel-by-deployment-group</value>
@@ -51,9 +51,8 @@
                             <expectedResponseText>{{title}}</expectedResponseText>
                         </smoketest.HttpRequestTest>
 
-                        <docker.Image name="petclinic">
-                            <image>bmoussaud/petclinic:${petclinic.image.version}</image>
-                            <registryHost>{{PROJECT_REGISTRY_HOST}}</registryHost>
+                        <dockerx.Image name="petclinic">
+                            <image>dkr-reg:5000/vpartington/petclinic:${petclinic.image.version}</image>
                             <network>petnetwork</network>
                             <labels>
                                 <value>zone=back</value>
@@ -62,46 +61,44 @@
                                 <value>petclinic-backend</value>
                             </dependencies>
                             <ports>
-                                <docker.PortSpec name="petclinic/exposed-port">
+                                <dockerx.PortSpec name="petclinic/exposed-port">
                                     <hostPort>{{HOST_PORT}}</hostPort>
                                     <containerPort>8080</containerPort>
-                                </docker.PortSpec>
+                                </dockerx.PortSpec>
                             </ports>
                             <volumes>
-                                <docker.VolumeSpec name="petclinic/petclinic-config">
+                                <dockerx.VolumeSpec name="petclinic/petclinic-config">
                                     <source>petclinic-config</source>
                                     <destination>/application/properties</destination>
-                                </docker.VolumeSpec>
+                                </dockerx.VolumeSpec>
                             </volumes>
                             <variables>
-                                <docker.EnvironmentVariableSpec name="petclinic/loglevel">
+                                <dockerx.EnvironmentVariableSpec name="petclinic/loglevel">
                                     <value>{{LOGLEVEL}}</value>
-                                </docker.EnvironmentVariableSpec>
-                                <docker.EnvironmentVariableSpec name="petclinic/constraint">
+                                </dockerx.EnvironmentVariableSpec>
+                                <dockerx.EnvironmentVariableSpec name="petclinic/constraint">
                                     <value>zone==back</value>
                                     <separator>:</separator>
-                                </docker.EnvironmentVariableSpec>
+                                </dockerx.EnvironmentVariableSpec>
                             </variables>
-                        </docker.Image>
+                        </dockerx.Image>
 
-                        <docker.Image name="petclinic-backend">
-                            <image>bmoussaud/petclinic-backend:${petclinic-backend.image.version}</image>
-                            <registryHost>{{PROJECT_REGISTRY_HOST}}</registryHost>
+                        <dockerx.Image name="petclinic-backend">
+                            <image>dkr-reg:5000/vpartington/petclinic-backend:${petclinic-backend.image.version}</image>
                             <network>petnetwork</network>
                             <labels>
                                 <value>zone=back</value>
                             </labels>
                             <variables>
-                                <docker.EnvironmentVariableSpec name="petclinic-backend/constraint">
+                                <dockerx.EnvironmentVariableSpec name="petclinic-backend/constraint">
                                     <value>zone==back</value>
                                     <separator>:</separator>
-                                </docker.EnvironmentVariableSpec>
+                                </dockerx.EnvironmentVariableSpec>
                             </variables>
-                        </docker.Image>
+                        </dockerx.Image>
 
-                        <docker.Image name="ha-proxy">
+                        <dockerx.Image name="ha-proxy">
                             <image>eeacms/haproxy:1.6</image>
-                            <registryHost>{{PROJECT_REGISTRY_HOST}}</registryHost>
                             <network>petnetwork</network>
                             <labels>
                                 <value>zone=front</value>
@@ -110,45 +107,42 @@
                                 <value>petclinic</value>
                             </dependencies>
                             <ports>
-                                <docker.PortSpec name="ha-proxy/web">
+                                <dockerx.PortSpec name="ha-proxy/web">
                                     <hostPort>80</hostPort>
                                     <containerPort>5000</containerPort>
-                                </docker.PortSpec>
-                                <docker.PortSpec name="ha-proxy/admin">
+                                </dockerx.PortSpec>
+                                <dockerx.PortSpec name="ha-proxy/admin">
                                     <hostPort>1936</hostPort>
                                     <containerPort>1936</containerPort>
-                                </docker.PortSpec>
+                                </dockerx.PortSpec>
                             </ports>
                             <variables>
-                                <docker.EnvironmentVariableSpec name="ha-proxy/BACKENDS">
+                                <dockerx.EnvironmentVariableSpec name="ha-proxy/BACKENDS">
                                     <value>petclinic:8080</value>
-                                </docker.EnvironmentVariableSpec>
-                                <docker.EnvironmentVariableSpec name="ha-proxy/constraint">
+                                </dockerx.EnvironmentVariableSpec>
+                                <dockerx.EnvironmentVariableSpec name="ha-proxy/constraint">
                                     <value>zone==front</value>
                                     <separator>:</separator>
-                                </docker.EnvironmentVariableSpec>
+                                </dockerx.EnvironmentVariableSpec>
                             </variables>
 
-                        </docker.Image>
+                        </dockerx.Image>
 
                         <sql.SqlScripts name="sql" location="sql"/>
 
-                        <docker.Folder name="petclinic.config" location="config/">
+                        <dockerx.Folder name="petclinic.config" location="config/">
                             <volumeName>petclinic-config</volumeName>
                             <containerName>petclinic</containerName>
                             <containerPath>/application/properties</containerPath>
-                        </docker.Folder>
+                        </dockerx.Folder>
 
-                        <docker.NetworkSpec name="petnetwork">
+                        <dockerx.NetworkSpec name="petnetwork">
                             <driver>{{petnetwork}}</driver>
-                        </docker.NetworkSpec>
+                        </dockerx.NetworkSpec>
 
                     </deployables>
-
-
                 </configuration>
             </plugin>
         </plugins>
     </build>
 </project>
-
